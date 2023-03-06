@@ -1,0 +1,552 @@
+---
+title: Understanding Game Behaviour Among Adolescents
+author: "Team cuRiosity"
+format: 
+  revealjs:
+    theme: simple
+    self-contained: true
+editor: visual
+---
+
+```{r directory, include = FALSE}
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(tidyverse)
+final_skill <- read_csv("final_skill.csv")
+allSkills_demoData <- read_csv("allSkills_demoData.csv")
+final_skill_player_categories <- read_csv("final_skill_player_categories.csv")
+player_categories <- read_csv("player_categories.csv")
+rating_vs_completed <- read_csv("rating vs completed.csv")
+rating_over_time <- read_csv("rating_over_time.csv")
+plotted_data <- read_csv("plotted_data.csv")
+categorised_rating_vs_completed <- read_csv("categorised_rating_vs_completed.csv")
+examplePlayer <- read_csv("examplePlayer.csv")
+```
+
+# How do players behave as they progress through the game?
+
+::: footer
+MACQUARIE UNIVERSITY
+:::
+
+## 
+
+We present the results of our **exploratory research** that aims to:
+
+::: incremental
+-   characterise play style by:
+    -   investigating variations between different demographics
+    -   tracking changes in skill prioritization over the progression of the game
+    -   understanding the perseverance of players on their number of attempts
+-   player perception vs game progression
+:::
+
+::: footer
+MACQUARIE UNIVERSITY
+:::
+
+# 3 Ps:
+
+::: incremental
+-   
+
+    # Prioritisation
+
+-   
+
+    # Perseverance
+
+-   
+
+    # Perception
+:::
+
+::: footer
+MACQUARIE UNIVERSITY
+:::
+
+## Background on the data used:
+
+-   This data is from a video game called Elm Street Stories. This data compiles participant's data and uses it to reduce risk taking behaviours and lowering the spread of human immunodeficiency virus (HIV) amongst adolescents.
+
+::: footer
+MACQUARIE UNIVERSITY
+:::
+
+## Data used
+
+::: incremental
+-   Demographic information of the created avatars, i.e. age, gender, ethnicity (this is for avatars only)
+
+-   Happiness rating how satisfied the players were from their epilogue endings
+
+-   Skill level avatar's final skill level at the end of the game
+
+-   Risk metric in a playthrough each bad decision leads to a strike and after 3 strikes you fail that scenario
+
+-   Percentage complete progression in the game to 100% i.e. player starts in a bad state and ends with an optimal state
+:::
+
+::: footer
+MACQUARIE UNIVERSITY
+:::
+
+# Category 1: Prioritisation
+
+::: footer
+MACQUARIE UNIVERSITY
+:::
+
+## How did players prioritise different skills?
+
+```{r overall}
+ggplot(
+  data = final_skill_player_categories %>% 
+    group_by(skill_type, avatar_id) %>%
+    summarise(avg_max = mean(value)),
+  mapping = aes(
+    x = skill_type, 
+    y = avg_max,
+    fill = skill_type
+  )
+) + geom_col() +
+  labs(
+    title = "Overall final skill levels"
+  )
+```
+
+::: footer
+MACQUARIE UNIVERSITY
+:::
+
+## Avatar Gender
+
+```{r gender}
+ggplot(
+  data = final_skill_player_categories %>% 
+    group_by(skill_type, avatar_gender) %>%
+    mutate(avg = mean(value)) %>%
+    slice_head(n = 1),
+  mapping = aes(
+    x = skill_type, 
+    y = avg,
+    fill = skill_type    
+  )
+) + geom_col() + facet_wrap(~ avatar_gender) +
+  labs(
+    title = "Overall final skill levels - by chosen gender"
+  )
+```
+
+::: footer
+MACQUARIE UNIVERSITY
+:::
+
+## Avatar Ethnicity
+
+```{r ethnicity}
+ggplot(
+  data = final_skill_player_categories %>% 
+    group_by(skill_type, avatar_id) %>%
+    mutate(avg_max = mean(value)) %>%
+    slice_head(n = 1),
+  mapping = aes(
+    x = skill_type, 
+    y = avg_max,
+    fill = skill_type
+  )
+) + geom_col() + facet_wrap(~ avatar_id) +
+  labs(
+    title = "Overall final skill levels - by chosen ethnicity"
+  )
+```
+
+::: footer
+MACQUARIE UNIVERSITY
+:::
+
+## Risk Metric
+
+```{r risk metric}
+ggplot(
+  data = final_skill_player_categories %>% 
+    group_by(skill_type, category) %>%
+    mutate(avg_max = mean(value)) %>%
+    slice_head(n = 1),
+  mapping = aes(
+    x = skill_type, 
+    y = avg_max,
+    fill = skill_type
+    
+  )
+) + geom_col() + facet_wrap(~ category) +
+  labs(
+    title = "Overall final skill levels - by risk metric"
+  )
+```
+
+::: footer
+MACQUARIE UNIVERSITY
+:::
+
+## How did players progress through their skills?
+
+```{r skills_demog_overall}
+allSkills_demoData %>%
+  ggplot(aes(x = attempt, y = meanSkillLvl, group = skill, colour = skill)) +
+  geom_point() + 
+  geom_line() +
+  xlab('Attempt') + 
+  ylab('Mean skill level')
+```
+
+::: footer
+MACQUARIE UNIVERSITY
+:::
+
+## Avatar Ethnicity
+
+```{r skills_demog_ethnicity}
+library(ggplot2)
+allSkills_demoData %>% 
+  ggplot(aes(x = attempt, y = meanSkillLvl, group = skill, colour = skill)) +
+  facet_wrap(~ avatar_id) +
+  geom_point() + 
+  geom_line() +
+  xlab('Attempt') + 
+  ylab('Mean skill level')
+```
+
+::: footer
+MACQUARIE UNIVERSITY
+:::
+
+## Avatar Gender
+
+```{r skills_demog_gender}
+allSkills_demoData %>% 
+  ggplot(aes(x = attempt, y = meanSkillLvl, group = skill, colour = skill)) +
+  facet_wrap(~ avatar_gender) +
+  geom_point() + 
+  geom_line() +
+  xlab('Attempt') + 
+  ylab('Mean skill level')
+```
+
+::: footer
+MACQUARIE UNIVERSITY
+:::
+
+## Schools
+
+```{r skills_demog_school}
+allSkills_demoData %>% 
+  ggplot(aes(x = attempt, y = meanSkillLvl, group = skill, colour = skill)) +
+  facet_wrap(~ school) +
+  geom_point() + 
+  geom_line() +
+  xlab('Attempt') + 
+  ylab('Mean skill level')
+```
+
+::: footer
+MACQUARIE UNIVERSITY
+:::
+
+# Category 2: Perseverance
+
+::: footer
+MACQUARIE UNIVERSITY
+:::
+
+## How did players prioritise different skills?
+
+Player attempts
+
+```{r attempts_overall}
+ggplot(allSkills_demoData %>%
+         group_by(player_id) %>%
+         summarise(max = max(attempt)), mapping = aes(x = max)) +
+  geom_histogram(binwidth = 5) +
+  xlab('Maximum Attempt') + 
+  ylab('Count')
+
+```
+
+::: footer
+MACQUARIE UNIVERSITY
+:::
+
+## By Gender
+
+```{r attempt gender}
+ggplot(allSkills_demoData %>%
+       group_by(player_id) %>%
+       mutate(max = max(attempt)) %>% 
+         slice_head(n = 1), mapping = aes(x = max, color = avatar_gender, fill = avatar_gender)) +
+  facet_wrap(~ avatar_gender) +
+  geom_histogram(binwidth = 5) +
+  xlab('Maximum Attempt') + 
+  ylab('Count')
+
+```
+
+::: footer
+MACQUARIE UNIVERSITY
+:::
+
+## By Ethnicity
+
+```{r attempt ethnicity}
+ggplot(allSkills_demoData %>%
+         group_by(player_id) %>%
+         mutate(max = max(attempt)) %>% 
+         slice_head(n = 1), mapping = aes(x = max, fill = avatar_id)) +
+  facet_wrap(~ avatar_id) +
+  geom_histogram(binwidth = 5) +
+  xlab('Maximum Attempt') + 
+  ylab('Count')
+
+```
+
+::: footer
+MACQUARIE UNIVERSITY
+:::
+
+## By School
+
+```{r attempt school}
+ggplot(allSkills_demoData %>%
+         group_by(player_id) %>%
+         mutate(max = max(attempt)) %>% 
+         slice_head(n = 1), mapping = aes(x = max, fill = school)) +
+  facet_wrap(~ school) +
+  geom_histogram(binwidth = 5) +
+  xlab('Maximum Attempt') + 
+  ylab('Count')
+```
+
+::: footer
+MACQUARIE UNIVERSITY
+:::
+
+# Category 3: Perception
+
+::: footer
+MACQUARIE UNIVERSITY
+:::
+
+```{r example}
+completion_rating_over_time <- replace_na(fill(arrange(bind_rows(examplePlayer %>% 
+  filter(event_id == 703) %>%
+  select(event_time_dbl, data_values) %>% ## Note: Proportion_complete was broken
+  separate(data_values, sep = ",", into = c("json_redacted","percentage_completed")) %>%
+  mutate(percentage_completed = as.numeric(percentage_completed)),
+
+# Over time their rating of the outcome. 
+examplePlayer %>%
+  filter(event_id == 707) %>%
+  select(event_time_dbl, data_values) %>%
+  separate(data_values, sep = ",", into = c("old_rating", "new_rating"))# %>%
+  ##mutate(new_rating = as.numeric(new_rating))
+), event_time_dbl), percentage_completed, new_rating), list(new_rating = "0"))
+
+ggplot(
+  data = completion_rating_over_time %>% 
+    select(event_time_dbl, percentage_completed, new_rating) %>% 
+    rename(Satisfaction_Rating = new_rating) %>%
+    rename(Game_Time = event_time_dbl),
+  mapping = aes(
+    x = Game_Time,
+    y = percentage_completed,
+    fill = Satisfaction_Rating,
+    
+  )
+)  + geom_area() + 
+  scale_fill_brewer(palette = "RdYlGn") + 
+  ylim(0, 1) +
+  labs(title = "Player 6486040's Satisfaction During Game Play")
+
+```
+
+## How did players prioritise different skills?
+
+::: panel-tabset
+## Linear Graph
+
+```{r plot }
+ggplot(
+  data = rating_vs_completed %>% select(player_id,percentage_completed, new_rating) %>%
+    mutate(test = (as.numeric(new_rating) / 4) - percentage_completed) %>%
+    group_by(percentage_completed) %>%
+    summarise(
+      avg = mean(test)
+    ),
+  mapping = aes(
+    x = percentage_completed,
+    y = avg
+  )
+) + geom_point() + 
+  geom_smooth(method = lm) + 
+  geom_hline(yintercept = 0) +
+  ylim(-1, 1) +
+  labs(
+    y = "Variation"
+  )
+```
+
+::: footer
+MACQUARIE UNIVERSITY
+:::
+
+## Summary
+
+```{r lm }
+linear_model <- lm(data = plotted_data)
+summary(linear_model)
+```
+
+::: footer
+MACQUARIE UNIVERSITY
+:::
+:::
+
+## Ethnicity
+
+```{r lm ethnicity}
+ggplot(data = categorised_rating_vs_completed %>% select(player_id,percentage_completed, new_rating, avatar_gender) %>%
+    mutate(test = (as.numeric(new_rating) / 4) - percentage_completed) %>%
+    group_by(percentage_completed, avatar_gender) %>%
+    summarise(
+      avg = mean(test)
+    ) %>% drop_na(),
+  mapping = aes(
+    x = percentage_completed,
+    y = avg
+  )
+) +
+  
+  geom_point() + 
+  geom_smooth(method = lm) + 
+  geom_hline(yintercept = 0) +facet_wrap(~ avatar_gender) + 
+  ylim(-1, 1) +
+  labs(
+    y = "Variation"
+  )
+```
+
+::: footer
+MACQUARIE UNIVERSITY
+:::
+
+## Gender
+
+```{r lm gender}
+ggplot(
+  data = categorised_rating_vs_completed %>% select(player_id,percentage_completed, new_rating, avatar_id) %>%
+    mutate(test = (as.numeric(new_rating) / 4) - percentage_completed) %>%
+    group_by(percentage_completed, avatar_id) %>%
+    summarise(
+      avg = mean(test)
+    ) %>% drop_na(),
+  mapping = aes(
+    x = percentage_completed,
+    y = avg
+  )
+) +
+  
+  geom_point() + 
+  geom_smooth(method = lm) + 
+  geom_hline(yintercept = 0) +facet_wrap(~ avatar_id) + 
+  ylim(-1, 1) +
+  labs(
+    y = "Variation"
+  )
+
+```
+
+::: footer
+MACQUARIE UNIVERSITY
+:::
+
+## 
+
+```{r density}
+ggplot(
+  data = categorised_rating_vs_completed %>% select(player_id,percentage_completed, new_rating, category) %>%
+    mutate(new_rating = as.numeric(new_rating)) %>% drop_na()
+  ,
+  
+  mapping = aes(
+    x = percentage_completed,
+    y = new_rating
+  )
+) + facet_wrap(~ category) + 
+  stat_density_2d(aes(fill = ..density..), geom = "raster", contour = FALSE) +
+  scale_fill_distiller(palette=4, direction=1) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0)) +
+  theme( legend.position='none') +
+  labs( title = "Density of satisfaction vs game completion" ) +
+  ylab("Satisfaction Rating")
+```
+
+::: footer
+MACQUARIE UNIVERSITY
+:::
+
+## Risk Levels
+
+```{r lm risk metric}
+ggplot(
+  data = categorised_rating_vs_completed %>% select(player_id,percentage_completed, new_rating, category) %>%
+    filter(category == "1. Low Risk") %>% group_by(percentage_completed) %>%
+    mutate(test = (as.numeric(new_rating) / 4) - percentage_completed) %>%
+    summarise(
+      avg = mean(test)
+    ),
+  mapping = aes(
+    x = percentage_completed,
+    y = avg,
+  )
+) + 
+  geom_smooth(method = lm, color="blue", size = 2) +  
+  geom_smooth(method = lm,
+              data = categorised_rating_vs_completed %>% select(player_id,percentage_completed, new_rating, category) %>%
+                filter(category == "3. High Risk") %>% group_by(percentage_completed) %>%
+                mutate(test = (as.numeric(new_rating) / 4) - percentage_completed) %>%
+                summarise(avg = mean(test)),
+              color = "red",
+              size = 2
+  )+   
+  geom_smooth(method = lm,
+              data = categorised_rating_vs_completed %>% select(player_id,percentage_completed, new_rating, category) %>%
+                filter(category == "2. Medium Risk") %>% group_by(percentage_completed) %>%
+                mutate(test = (as.numeric(new_rating) / 4) - percentage_completed) %>%
+                summarise(avg = mean(test)),
+              color = "yellow",
+              size = 2
+  )+ 
+  geom_hline(yintercept = 0) +
+  labs(y = "Variation")
+```
+
+::: footer
+MACQUARIE UNIVERSITY
+:::
+
+# Future Recommendations
+
+-   Analyse survey results with the different play styles of players
+-   Determine whether outlets like this game can be used as a suitable method of teaching adolescents about risk behaviours
+-   What extent can these outlets can help in reducing the risk taking behaviour evident in the bad decisions and endings of the games?
+
+# Conclusion
+
+1.  Effect of demographics was consistent across prioritisation and perseverance - no significant effect
+2.  There is a strong potential for using the characteristics of perception as significant predictor of identifying individuals who are more inclined towards risk taking behaviours.
+
+::: footer
+MACQUARIE UNIVERSITY
+:::
