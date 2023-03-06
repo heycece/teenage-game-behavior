@@ -1,5 +1,5 @@
 # teenage-game-behavior
-team cuRiosity's presentation | Best in Visualization | Best Overall | presented in 8 minutes
+team cuRiosity's presentation | Best in Visualization | Best Overall
 
 ## team cuRiosity members:
 Sujal Chadha | Christopher Rudolph | Beth Curran | Cassandra Johns | Carina Gebilaguin Carino
