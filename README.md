@@ -5,11 +5,11 @@ team cuRiosity's presentation | Best in Visualization | Best Overall
 Sujal Chadha | Christopher Rudolph | Beth Curran | Cassandra Johns | Carina Gebilaguin Carino
 
 Our group did a investigated adolescents' progression throughout a videogame using:
-1. __demographic data, 
-2. __happiness ratings, 
-3. __final skill levels, 
+1. __demographic data__, 
+2. __happiness ratings__, 
+3. __final skill levels__, 
 4. __risk metrics__ and 
-5. __percentage complete game progression
+5. __percentage__ complete game progression
 
 by classifying their categories into 3:
 
