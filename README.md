@@ -2,11 +2,7 @@
 team cuRiosity's presentation | Best in Visualization | Best Overall | presented in 8 minutes
 
 ## team cuRiosity members:
-Sujal Chadha
-Christopher Rudolph 
-Beth Curran
-Cassandra Johns
-Carina Gebilaguin Carino
+Sujal Chadha | Christopher Rudolph | Beth Curran | Cassandra Johns | Carina Gebilaguin Carino
 
 Our group did a investigated adolescents' progression throughout a videogame using:
 1. __demographic data, 
